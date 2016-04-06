@@ -109,6 +109,11 @@ def main():
     cmd = ["lipo", "-output", output, "-create"] + dylibs
     execute(cmd)
 
+    framework = "{build}/Frameworks/{name}.framework".format(name=POD_NAME,
+                                                             build=BUILD_DIR)
+    print color(u"\U0001f680  Copying Info.plist ...")
+    shutil.copy("./Info.plist", framework)
+
     print color(u"\U0001f680  Replacing binary and creating tar.gz ...")
     shutil.move(output, BINARY)
 
