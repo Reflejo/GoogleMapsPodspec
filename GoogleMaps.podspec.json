@@ -1,12 +1,12 @@
 {
   "name": "GoogleMaps",
-  "version": "1.13.0",
+  "version": "1.13.2",
   "summary": "Google Maps SDK for iOS.",
   "description": "Use the Google Maps SDK for iOS to enrich your app with interactive maps, immersive Street View panoramas, and detailed information from Google's Places database.",
   "homepage": "https://developers.google.com/maps/ios/",
   "license": {
-    "text": "If you use the Google Maps SDK for iOS in your application, you must\n      include the attribution text as part of a legal notices section in your\n      application. Including legal notices as an independent menu item, or as\n      part of an \"About\" menu item, is recommended.\n\n      You can get the attribution text by making a call to\n      [GMSServices openSourceLicenseInfo].\n",
-    "type": "Copyright"
+    "type": "Copyright",
+    "text": "      If you use the Google Maps SDK for iOS in your application, you must\n      include the attribution text as part of a legal notices section in your\n      application. Including legal notices as an independent menu item, or as\n      part of an \"About\" menu item, is recommended.\n\n      You can get the attribution text by making a call to\n      [GMSServices openSourceLicenseInfo].\n"
   },
   "authors": "Google Inc.",
   "platforms": {
@@ -15,9 +15,9 @@
   "vendored_frameworks": [
     "Frameworks/GoogleMaps.framework"
   ],
-  "resources": [
-    "Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle"
-  ],
+  "resource_bundles": {
+    "GoogleMaps": "Frameworks/GoogleMaps.framework/GoogleMaps.bundle/**"
+  },
   "source_files": [
 
   ],
@@ -47,6 +47,6 @@
     "z"
   ],
   "source": {
-    "http": "https://raw.githubusercontent.com/Reflejo/GoogleMapsPodspec/master/369280b0e1f04cb7-GoogleMaps-1.13.0.tar.gz"
+    "http": "https://raw.githubusercontent.com/alwold-if/GoogleMapsPodspec/master/aa3052925ceeea2d-GoogleMaps-1.13.2.tar.gz"
   }
 }
