@@ -115,8 +115,11 @@ def main():
     info_plist_source = "Versions/Current/Info.plist".format(framework_version=framework_version)
     info_plist_target = "{framework}/Info.plist".format(framework=framework)
 
+    print "build dir {build}".format(build=BUILD_DIR)
     print color(u"\U0001f680  Copying Info.plist ...")
-    shutil.copy("./Info.plist", framework_version)
+    shutil.copy("{framework_version}/Resources/GoogleMaps.bundle/Info.plist".format(framework_version=framework_version), framework_version)
+    print color(u"\U0001f680  Modifying Info.plist ...")
+    subprocess.call(["defaults", "write", "{framework_version}/Info.plist".format(framework_version=framework_version), "CFBundleExecutable", POD_NAME])
     print color(u"\U0001f680  Symlinking Info.plist ...")
     os.symlink(info_plist_source, info_plist_target)
 
