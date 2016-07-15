@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import StringIO
 import glob
 import itertools
@@ -22,7 +21,8 @@ BUILD_DIR = tempfile.mkdtemp()
 BINARY = "{build}/Frameworks/{name}.framework/Versions/A/{name}"\
     .format(name=POD_NAME, build=BUILD_DIR)
 LIBTOOL_CMD = ["libtool", "-dynamic", BINARY, "-weak_framework",
-               "UIKit", "-weak_framework", "Foundation", "-ObjC"]
+               "UIKit", "-weak_framework", "Foundation", "-ObjC",
+               "-install_name", "@rpath/{name}.framework/{name}".format(name=POD_NAME)]
 
 
 def color(string, color="cyan"):
@@ -111,8 +111,24 @@ def main():
 
     framework = "{build}/Frameworks/{name}.framework".format(name=POD_NAME,
                                                              build=BUILD_DIR)
+    framework_version = "{framework}/Versions/A".format(framework=framework)
+    info_plist_source = "Versions/Current/Info.plist".format(framework_version=framework_version)
+    info_plist_target = "{framework}/Info.plist".format(framework=framework)
+
     print color(u"\U0001f680  Copying Info.plist ...")
-    shutil.copy("./Info.plist", framework)
+    shutil.copy("./Info.plist", framework_version)
+    print color(u"\U0001f680  Symlinking Info.plist ...")
+    os.symlink(info_plist_source, info_plist_target)
+
+    resources = "{framework_version}/Resources".format(framework_version=framework_version)
+    print color(u"\U0001f680  Moving bundles out of Resources ...")
+    for file in os.listdir(resources):
+        shutil.move("{resources}/{file}".format(resources=resources, file=file), framework_version)
+        os.symlink("Versions/Current/{file}".format(file=file), "{framework}/{file}".format(framework=framework, file=file))
+
+    print color(u"\U0001f680  Removing Resources directory and symlinks ...")
+    os.rmdir(resources)
+    os.remove("{framework}/Resources".format(framework=framework))
 
     print color(u"\U0001f680  Replacing binary and creating tar.gz ...")
     shutil.move(output, BINARY)
